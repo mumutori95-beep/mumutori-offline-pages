@@ -88,3 +88,15 @@ Placement is the entire purpose of this edit: the banner's feet must visibly sta
 Remove the banner from its old indoor location and naturally reveal the existing right-side butter display/letter corner behind it, with the same vintage typewriter and cream-brown wall mailbox. Preserve all other interior elements exactly: pale rectangular cuboid butter center table and shallow butter side consoles with silver foil bases, merchandise, original rear dark wood/teal counter under the diagonal stairs, existing ceiling AC/lights, wood walls/floor, butter drip trim.
 KEEP UNCHANGED: camera crop and viewpoint, all building architecture, sign fascia panel, acorn and main sign Korean name "무무토리", small sign descriptor "소품상점", blade sign, facade vent, brickwork, upper windows, wires, garage/car, street, lighting and photographic style. Same exact banner lettering: "무무토리 소품상점" and "편지를 남기는 곳". No new text, no new banner design, no added people, no extra decor, no other modifications. This is a minimal single-object relocation edit, not a new design variation.
 ```
+
+## 2026-10-24 · 버터 테이블보 + 빈티지 가구 (assets/mumutori-interior-v3.jpg)
+
+주문제작 버터 조형(견적 750만 원·약 한 달)을 보류하고 바꾼 실내 목업입니다. 사용자가 직접 생성해 첨부한 이미지를 그대로 사용했습니다.
+
+- 가운데: 기존 테이블에 버터색 4면 박스형 테이블보, 앞면 도토리 캐릭터 + MUMUTORI / BUTTER, 상판 무지
+- 양옆: 높이가 비슷한 빈티지 중고 서랍장을 버터색으로 도장
+- 벽: 무무토리 캐릭터 액자, 상단 버터 드립 도장 유지
+- 오른쪽 벽: 버터색 빈티지 책상·나무 스툴·타자기, 바로 위 도토리 우편함
+- 후면 계단 아래 카운터·우드·조명 유지
+
+`mumutori-butter-cloth-v3.jpg`와 `mumutori-letter-corner-v3.jpg`는 같은 이미지에서 잘라 낸 상세입니다. 생성 이미지의 글자·로고는 제작 원본으로 쓰지 않습니다.

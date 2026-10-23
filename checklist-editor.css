@@ -76,3 +76,14 @@
 .buylist-fold>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .buylist-fold .buylist-row{opacity:.82}
 .buylist-status[data-status="later"]{background:var(--soft);color:var(--muted);border-style:dashed}
+.update-banner{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin:18px 0;padding:16px 18px;border:1px solid var(--butter);border-left:5px solid var(--butter);border-radius:9px;background:#fff6dc}
+.update-banner[hidden]{display:none}
+.update-banner p{flex:1 1 320px;font-size:14px;line-height:1.7;color:var(--ink)}
+.update-banner strong{color:var(--accent)}
+.decision-1024{margin-top:26px;padding:20px 22px;border:1px solid var(--butter);border-radius:10px;background:#fff6dc}
+.decision-1024 h3{font-size:18px;letter-spacing:-.4px;margin-bottom:8px}
+.decision-1024 p{color:var(--ink);line-height:1.75}
+.decision-1024 ul{margin-top:10px;padding-left:20px;display:grid;gap:6px}
+.letter-corner-figure{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:28px;align-items:center;margin:0 0 30px}
+.letter-corner-figure img{width:100%;height:auto;border-radius:8px}
+@media (max-width:700px){.letter-corner-figure{grid-template-columns:1fr}.letter-corner-figure img{max-width:260px}}

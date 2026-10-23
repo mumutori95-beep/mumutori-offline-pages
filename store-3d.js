@@ -7,7 +7,7 @@
   if (!mount) return;
   mount.innerHTML = `
     <div class="s3-toolbar" aria-label="공간 시점 선택">
-      <div class="s3-presets"><button type="button" data-view="overview" aria-pressed="true">전체 공간</button><button type="button" data-view="front" aria-pressed="false">입구에서</button><button type="button" data-view="plan" aria-pressed="false">위에서</button><button type="button" data-view="keyring" aria-pressed="false">키링 벽</button></div>
+      <div class="s3-presets"><button type="button" data-view="overview" aria-pressed="true">전체 공간</button><button type="button" data-view="front" aria-pressed="false">입구에서</button><button type="button" data-view="plan" aria-pressed="false">위에서</button><button type="button" data-view="keyring" aria-pressed="false">오른쪽 벽</button></div>
       <div class="s3-options"><label><input type="checkbox" data-option="facade"> 전면 간판</label><label><input type="checkbox" data-option="walls" checked> 벽 보기</label></div>
     </div>
     <div class="s3-viewport" tabindex="0" role="application" aria-label="무무토리 공간 3D 보기. 방향키로 회전, 더하기와 빼기로 확대 축소, Home으로 처음 시점. 마우스나 한 손가락으로 돌리고 두 손가락으로 확대할 수 있습니다." aria-describedby="s3-help">
@@ -18,7 +18,7 @@
       <div class="s3-view-caption" aria-live="polite">전체 공간 · 좌우로 돌려보세요</div>
     </div>
     <div class="s3-under"><p id="s3-help"><strong>드래그해서 회전</strong> · 휠 / 두 손가락으로 확대 · 방향키로 시점 이동</p><span>기존 카운터 + 계단 유지 · 뒤 통로는 창고(직원만)</span></div>
-    <div class="s3-legend"><span><i class="s3-dot s3-dot-butter"></i>버터 매대 2곳</span><span><i class="s3-dot s3-dot-pink"></i>사입 소품 16종</span><span><i class="s3-dot s3-dot-wood"></i>기존 결제 카운터</span><span><i class="s3-dot s3-dot-paper"></i>오른쪽 거울·키링 벽 · 창가 모듈 테이블</span></div>
+    <div class="s3-legend"><span><i class="s3-dot s3-dot-butter"></i>버터 테이블보 · 빈티지 서랍장</span><span><i class="s3-dot s3-dot-pink"></i>사입 소품 16종</span><span><i class="s3-dot s3-dot-wood"></i>기존 결제 카운터</span><span><i class="s3-dot s3-dot-paper"></i>오른쪽 거울·키링 벽 · 타자기 책상·우편함</span></div>
     <details class="s3-assortment"><summary>매대에 놓인 상품 보기 <span>레퍼런스의 실제 판매 상품</span></summary><div class="s3-product-list"></div><p>상품 구성과 수량은 배치 예시입니다. 실제 사입 목록은 체크리스트에서 조정해 주세요.</p></details>`;
   // One canvas draws all projected geometry. No CSS 3D compositor layers.
   const viewport = mount.querySelector('.s3-viewport');
@@ -60,7 +60,7 @@
     shapes.push(n);return n;
   }
   function label(text,x,y,z,variant=''){const n=plane(`s3-label ${variant}`,x,y,z,118,25,'',text);billboardNodes.push({node:n,x,y,z});return n;}
-  const colors={foundation:'#b8a590',floor:'#c79f72',wall:'#cfa96f',cream:'#eee4cd',counter:'#573e2a',darkwood:'#62442c',teal:'#315a52',stairs:'#ded1b9',rail:'#777669',black:'#37322c',brass:'#ad8652',bottle:'#67462f',butter:'#f4db87',foil:'#c7cbc5',paper:'#efe5cc',typewriter:'#dfd4b5',keyboard:'#494235',light:'#f6edd8',metal:'#738078',wood:'#bd986b'};
+  const colors={foundation:'#b8a590',floor:'#c79f72',wall:'#cfa96f',cream:'#eee4cd',counter:'#573e2a',darkwood:'#62442c',teal:'#315a52',stairs:'#ded1b9',rail:'#777669',black:'#37322c',brass:'#ad8652',bottle:'#67462f',butter:'#f4db87',cloth:'#f2dc94',foil:'#c7cbc5',paper:'#efe5cc',typewriter:'#dfd4b5',keyboard:'#494235',light:'#f6edd8',metal:'#738078',wood:'#bd986b'};
   const shade={top:1.07,front:1,right:.83,left:.91,back:.88,bottom:.74};
   function tint(hex,n){const v=parseInt(hex.slice(1),16);return `rgb(${Math.min(255,Math.round((v>>16)*n))},${Math.min(255,Math.round(((v>>8)&255)*n))},${Math.min(255,Math.round((v&255)*n))})`;}
   function path(c,pts){c.beginPath();c.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)c.lineTo(pts[i][0],pts[i][1]);c.closePath();}
@@ -89,6 +89,10 @@
       } else if(m==='butter'){
         fill(gradient(shape.side==='top'?'#ffeeb0':'#ffe6a0',shape.side==='top'?'#f1d383':'#edce73'));
         c.strokeStyle='#fff1b5';c.lineWidth=2;c.strokeRect(1,1,w-2,h-2);
+      } else if(m==='cloth'){
+        fill(gradient(shape.side==='top'?'#fbe9ad':'#f5df98',shape.side==='top'?'#efd486':'#ead083'));
+        for(let y=2;y<h;y+=3)line(0,y,w,y,'#fff5d012',.6);
+        if(shape.side!=='top'&&shape.side!=='bottom'){c.strokeStyle='#d8bb6a66';c.lineWidth=1;c.strokeRect(.5,.5,w-1,h-1);}
       } else if(m==='foil'){
         fill('#c0c7c1');
         const tones=['#dce1d9','#a9b1aa','#eef0e9','#99a49c','#c8ceca','#e5e8df'];
@@ -116,6 +120,26 @@
       }else if(cls==='s3-mailbox-face'){
         fill('#eee0bb');c.strokeStyle='#8e7350';c.lineWidth=2;c.strokeRect(1,1,w-2,h-2);c.fillStyle='#514531';c.fillRect(4,8,w-8,4);text('POST',7,'#826239',w/2,h*.75);
       }else if(cls==='s3-letter-sign'){fill('#fcf5e0');c.strokeStyle='#b1a28b';c.lineWidth=1;c.strokeRect(0,0,w,h);text(shape.text,10);}
+      else if(cls==='s3-cloth-print'){
+        const brown='#6a3906',cx=h*.55,cy=h*.56,r=h*.3;
+        c.fillStyle='#fff7df';c.beginPath();c.arc(cx,cy+r*.18,r,0,Math.PI*2);c.fill();c.strokeStyle=brown;c.lineWidth=2;c.stroke();
+        c.fillStyle='#9a5a2c';c.beginPath();c.ellipse(cx,cy-r*.42,r*1.05,r*.55,0,Math.PI,0);c.fill();c.fillRect(cx-r*1.05,cy-r*.44,r*2.1,r*.22);c.strokeStyle=brown;c.stroke();
+        c.fillRect(cx-1.5,cy-r*1.15,3,r*.25);
+        c.fillStyle=brown;for(const dx of [-.35,.35]){c.beginPath();c.arc(cx+dx*r,cy+r*.2,r*.13,0,Math.PI*2);c.fill();}
+        c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle=brown;
+        c.font=`700 ${h*.13}px Pretendard,sans-serif`;c.fillText('M U M U T O R I',h*1.15,h*.42,w-h*1.25);
+        c.font=`800 ${h*.36}px Pretendard,sans-serif`;c.fillText('BUTTER',h*1.1,h*.8,w-h*1.2);
+      }
+      else if(cls==='s3-drawer'){
+        fill('#f6e2a0');const rows=shape.text==='4'?4:3,rh=h/rows;
+        for(let i=0;i<rows;i++){c.strokeStyle='#cfae62';c.lineWidth=1.2;c.strokeRect(3,i*rh+3,w-6,rh-6);c.fillStyle='#5b4a3a';c.beginPath();c.arc(w/2,i*rh+rh/2,2.4,0,Math.PI*2);c.fill();}
+      }
+      else if(cls==='s3-frame'){
+        fill('#5d3d24');c.fillStyle='#fbf3df';c.fillRect(5,5,w-10,h-10);
+        const cx=w/2,cy=h*.56,r=w*.2;c.strokeStyle='#6a3906';c.lineWidth=1.6;c.fillStyle='#fff8e8';c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.fill();c.stroke();
+        c.fillStyle='#a8673a';c.beginPath();c.ellipse(cx,cy-r*.55,r*1.05,r*.6,0,Math.PI,0);c.fill();c.stroke();
+        c.fillStyle='#6a3906';for(const dx of [-.35,.35]){c.beginPath();c.arc(cx+dx*r,cy+r*.15,r*.13,0,Math.PI*2);c.fill();}
+      }
       else if(cls==='s3-glass'){fill(gradient('#b9d3cd08','#effff31f'));line(w*.2,0,w*.8,h,'#ffffff55',2);}
       else if(cls==='s3-facade-sign'){fill('#f7edcf');c.strokeStyle='#93774b';c.lineWidth=2;c.strokeRect(1,1,w-2,h-2);c.font='bold 28px Georgia,serif';c.fillStyle='#6b452b';c.textAlign='center';c.textBaseline='middle';c.fillText('mumutori',w/2,h/2);}
       else if(cls==='s3-door-word')text('OPEN',17);
@@ -133,7 +157,7 @@
     ctx.save();path(ctx,dst);ctx.clip();ctx.transform(aa,bb,cc,dd,A[0]-aa*a[0]-cc*a[1],A[1]-bb*a[0]-dd*a[1]);ctx.drawImage(image,0,0);ctx.restore();
   }
   function imageQuad(image,p){const w=image.naturalWidth||image.width,h=image.naturalHeight||image.height;if(!w||!h)return;texturedTriangle(image,[[0,0],[w,0],[w,h]],[p[0],p[1],p[2]]);texturedTriangle(image,[[0,0],[w,h],[0,h]],[p[0],p[2],p[3]]);}
-  const textured=new Set(['floor','wall','counter','darkwood','butter','foil','keyboard']);
+  const textured=new Set(['floor','wall','counter','darkwood','butter','foil','keyboard','cloth']);
   function render(){
     scheduled=false;if(!width||!height)return;
     ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);ctx.clearRect(0,0,width,height);ctx.imageSmoothingEnabled=true;
@@ -209,39 +233,39 @@
     box(x,23,-149,45,4,4,'brass');
   }
   label('기존 결제 카운터',20,151,-188,'s3-label-dark');
-  // Three full rectangular butter blocks: matching top/base footprint, no legs or overhang.
-  function butter(x,z,w,d,h) {
-    // The yellow body starts above the foil, avoiding intersecting volumes.
-    box(x,(h+30)/2,z,w,h-30,d,'butter');
-    box(x,15,z,w+.8,30,d+.8,'foil');
-    for(let i=0;i<Math.ceil(w/35);i++){
-      const xx=x-w/2+15+i*34;
-      plane('s3-wrapper-fold',xx,30+(i%2)*2,z+d/2+.6,37,18,`rotateZ(${i%2?7:-7}deg)`);
-      plane('s3-wrapper-fold',xx,29,z-d/2-.6,37,17,`rotateY(180deg) rotateZ(${i%2?-8:9}deg)`);
-    }
-    for(let i=0;i<Math.ceil(d/37);i++){
-      plane('s3-wrapper-fold',x+w/2+.6,30,z-d/2+17+i*36,38,17,`rotateY(90deg) rotateZ(${i%2?6:-8}deg)`);
-      plane('s3-wrapper-fold',x-w/2-.6,30,z-d/2+17+i*36,38,17,`rotateY(-90deg) rotateZ(${i%2?-9:7}deg)`);
-    }
-    for(let i=0;i<Math.ceil(w/64);i++){
-      const len=22+(i%3)*13;
-      plane('s3-butter-drip',x-w/2+23+i*60,h-len/2+1,z+d/2+1,12+(i%2)*5,len);
-    }
-    for(let i=0;i<Math.ceil(d/64);i++)plane('s3-butter-drip',x+w/2+1,h-14-(i%2)*6,z-d/2+23+i*62,12,30+(i%2)*13,'rotateY(90deg)');
-    // Official logo is a modest wrapper detail, not printed on every displayed good.
-    const logo=plane('s3-wrapper-logo',x+w*.29,18,z+d/2+1.8,21,21);
-    const im=document.createElement('img');im.src='assets/brand-logo.png';im.alt='';im.loading='lazy';logo.appendChild(im);
+  // 2026-10-24: existing centre table wrapped in a box-type butter tablecloth (printed front), vintage dressers painted butter.
+  function clothTable(x,z,w,d,h){
+    box(x,h/2,z,w,h,d,'cloth');
+    plane('s3-cloth-print',x+4,h/2,z+d/2+2.5,w*.86,h*.62);
   }
-  butter(-11,49,226,142,82);
-  butter(-213,12,64,226,72);
-  // Small display risers leave most of the butter top visible.
-  box(-42,85,21,120,6,46,'paper');box(-209,75,-34,49,6,89,'paper');
-  // Right wall: existing mirror + keyring hanger (no letter corner — owner decision 2026-10-11).
+  function dresser(x,z,w,d,h,faceDir,rows){
+    box(x,h/2+5,z,w,h-10,d,'butter');
+    for(const dz of [-d/2+5,d/2-5])for(const dx of [-w/2+5,w/2-5])box(x+dx,3,z+dz,5,6,5,'butter');
+    box(x,h+1,z,w+3,3,d+3,'butter');
+    plane('s3-drawer',x+faceDir*(w/2+2),h/2+5,z,d-6,h-14,`rotateY(${faceDir>0?90:-90}deg)`,String(rows));
+  }
+  clothTable(-11,49,226,142,82);
+  dresser(-215,-40,48,96,74,1,3);
+  dresser(-215,72,48,104,72,1,4);
+  label('버터 테이블보',-11,128,122);
+  label('빈티지 서랍장 (버터색 도장)',-213,118,16);
+  // Small display risers leave most of the tablecloth top visible.
+  box(-42,85,21,120,6,46,'paper');box(-213,77,-40,40,5,80,'paper');
+  // Right wall: mirror + keyring hanger, a painted dresser, character frame, and (10/24) the typewriter desk with the mailbox.
   plane('s3-mirror',249,126,-150,105,214,'rotateY(-90deg)');
   for(const y of [178,128]){box(246,y,110,4,4,170,'brass');for(let i=0;i<7;i++)box(242,y-5,40+i*23,2,10,2,'brass');}
   box(247,200,110,4,4,176,'darkwood');
   plane('s3-hanger-sign',250,214,110,96,24,'rotateY(-90deg)','KEYRING',walls);
   label('거울 · 키링 행거',214,232,30);
+  dresser(226,-40,44,88,78,-1,3);
+  plane('s3-frame',247,168,-40,46,58,'rotateY(-90deg)');
+  // Typewriter desk on slim turned legs, wooden stool, wall mailbox above.
+  box(226,74,205,46,5,74,'butter');box(226,66,205,42,10,70,'butter');
+  for(const dz of [-32,32])for(const dx of [-18,18])box(226+dx,32,205+dz,4,62,4,'butter');
+  box(224,82,203,26,9,30,'typewriter');box(219,87.5,203,13,2,26,'keyboard');plane('s3-writing-paper',232,96,203,22,18,'rotateY(-90deg) rotateZ(-8deg)');
+  box(186,44,205,20,4,20,'darkwood');for(const dx of [-7,7])for(const dz of [-7,7])box(186+dx,21,205+dz,3,42,3,'darkwood');
+  box(246,140,215,12,30,26,'paper');plane('s3-mailbox-face',239.6,140,215,26,30,'rotateY(-90deg)');
+  label('타자기 책상 · 우편함',200,168,205);
   // Two small window module tables (560×370 in the survey sheet).
   for(const x of [40,150]){box(x,28,272,69,56,46,'cream');box(x,57,272,71,3,48,'wood');}
   label('창가 모듈 테이블',95,96,300);
@@ -279,7 +303,7 @@
   const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
   function clearPreset(){mount.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed','false'));mount.querySelector('.s3-view-caption').textContent='자유 시점';}
   function zoom(delta){state.zoom=clamp(state.zoom*delta,.55,2.1);draw();}
-  const presets={overview:{rx:-27,ry:27,zoom:1,text:'전체 공간 · 좌우로 돌려보세요'},front:{rx:-12,ry:0,zoom:1.1,text:'입구에서 · 뒤쪽 계단과 카운터 유지'},plan:{rx:-83,ry:0,zoom:.9,text:'위에서 · 중앙 버터 테이블과 벽면 진열의 동선'},keyring:{rx:-20,ry:50,zoom:1.15,text:'키링 벽 · 오른쪽 거울과 키링 행거'}};
+  const presets={overview:{rx:-27,ry:27,zoom:1,text:'전체 공간 · 좌우로 돌려보세요'},front:{rx:-12,ry:0,zoom:1.1,text:'입구에서 · 뒤쪽 계단과 카운터 유지'},plan:{rx:-83,ry:0,zoom:.9,text:'위에서 · 가운데 버터 테이블과 양옆 서랍장의 동선'},keyring:{rx:-20,ry:50,zoom:1.15,text:'오른쪽 벽 · 거울·키링 행거·타자기 책상과 우편함'}};
   function preset(name){Object.assign(state,presets[name]);mount.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===name)));mount.querySelector('.s3-view-caption').textContent=presets[name].text;draw();}
   mount.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>preset(b.dataset.view)));
   mount.querySelectorAll('[data-option]').forEach(input=>input.addEventListener('change',()=>{state[input.dataset.option]=input.checked;draw();}));

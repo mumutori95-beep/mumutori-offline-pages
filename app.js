@@ -17,6 +17,14 @@
 
     const byId = (id) => document.getElementById(id);
     const clone = value => JSON.parse(JSON.stringify(value));
+    // 변경 묶음(update-1024.js 등)의 새 항목은 처음 여는 기기의 기본 목록에도 포함한다.
+    const updates = Array.isArray(window.OFFLINE_UPDATES) ? window.OFFLINE_UPDATES : [];
+    updates.forEach(update => {
+      const seenTasks = new Set(data.tasks.map(task => task.id));
+      const seenItems = new Set(data.inventory.map(item => item.id));
+      (update.tasks || []).forEach(task => { if (!seenTasks.has(task.id)) data.tasks.push(clone(task)); });
+      (update.inventory || []).forEach(item => { if (!seenItems.has(item.id)) data.inventory.push(clone(item)); });
+    });
     const seedTasks = clone(data.tasks).map(task => ({
       ...task,
       dueDate: task.dueDate || '',
@@ -276,6 +284,53 @@
       state.tasks = tasks; state.inventory = inventory;
       syncDefinitions(); save();
       renderFilters(); renderTasks(); renderInventoryFilters(); renderInventory();
+    }
+
+    // 저장된 목록에 아직 없는 변경 항목만 보여 주고, 누르면 더한다(기존 항목·완료 기록은 그대로).
+    function missingUpdateEntries(update) {
+      const taskIdsNow = new Set(state.definitions.tasks.map(task => task.id));
+      const itemIdsNow = new Set(state.definitions.inventory.map(item => item.id));
+      return {
+        tasks: (update.tasks || []).filter(task => !taskIdsNow.has(task.id)),
+        inventory: (update.inventory || []).filter(item => !itemIdsNow.has(item.id)),
+      };
+    }
+
+    function applyUpdate(update) {
+      if (cloudLocked) { notify('클라우드 기록을 확인한 뒤 다시 눌러 주세요.'); return; }
+      const missing = missingUpdateEntries(update);
+      if (!missing.tasks.length && !missing.inventory.length) { renderUpdateBanners(); return; }
+      const definitions = clone(state.definitions);
+      const addCategories = (key, names) => names.forEach(name => { if (!definitions[key].includes(name)) definitions[key].push(name); });
+      addCategories('taskCategories', missing.tasks.map(task => task.category));
+      addCategories('inventoryCategories', missing.inventory.map(item => item.category));
+      const ids = new Set(definitions.tasks.map(task => task.id).concat(missing.tasks.map(task => task.id)));
+      missing.tasks.forEach(task => definitions.tasks.push({ ...clone(task), dependsOn: task.dependsOn.filter(id => ids.has(id)) }));
+      missing.inventory.forEach(item => definitions.inventory.push(clone(item)));
+      try {
+        commitDefinitions(definitions);
+        notify(update.label + ' 항목 ' + (missing.tasks.length + missing.inventory.length) + '개를 목록에 더했습니다.');
+      } catch (error) {
+        notify(error.message || '항목을 더하지 못했습니다.');
+      }
+    }
+
+    function renderUpdateBanners() {
+      document.querySelectorAll('[data-update-banner]').forEach(banner => {
+        const pending = updates.map(update => ({ update, missing: missingUpdateEntries(update) }))
+          .filter(entry => entry.missing.tasks.length || entry.missing.inventory.length);
+        banner.hidden = !pending.length;
+        if (!pending.length) { banner.replaceChildren(); return; }
+        const fragment = document.createDocumentFragment();
+        pending.forEach(({ update, missing }) => {
+          const text = node('p', '');
+          text.append(node('strong', '', update.label), document.createTextNode(' · ' + update.summary + ' — 할 일 ' + missing.tasks.length + '개, 준비물 ' + missing.inventory.length + '개가 아직 이 목록에 없어요. 기존 항목과 체크는 그대로 두고 새 항목만 더합니다.'));
+          const button = editorButton(update.label + ' 항목 추가', '', () => applyUpdate(update));
+          button.disabled = cloudLocked;
+          fragment.append(text, button);
+        });
+        banner.replaceChildren(fragment);
+      });
     }
 
     function dialogForm(title, description) {
@@ -606,7 +661,7 @@
       if (!visible.length) fragment.append(node('p', 'empty-state', '조건에 맞는 항목이 없습니다. 검색어나 필터를 바꿔 보세요.'));
       elements.taskList.replaceChildren(fragment);
       textAt('task-summary', visible.length + '개 표시 · 전체 ' + data.tasks.length + '개');
-      renderProgress();
+      renderProgress();      renderUpdateBanners();
     }
 
     // 브랜딩·포장 구매 목록: 공개용 사본(buylist-data.js)을 보여 주고, 지금 열린 준비표에 같은 항목이 있으면 그 상태를 따른다(화면 표시만 — 저장 내용은 그대로).
@@ -755,6 +810,7 @@
       elements.inventoryList.replaceChildren(fragment);
       renderInventorySummary();
       budgetView?.render();
+      renderUpdateBanners();
     }
 
     function renderInventoryFilters() {
