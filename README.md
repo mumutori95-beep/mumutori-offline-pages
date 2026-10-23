@@ -1,4 +1,8 @@
-# 무무토리 오프라인 · 공간 준비 노트
+# 무무토리 소품상점 · 오픈 준비
+
+`index.html`은 깔끔하게 정리한 첫 페이지입니다(매장 디자인 · 새 간판 · 씨앗 컴퍼니 · 오픈 준비 체크). 이전의 전체 준비 노트(공유 체크리스트·예산·행정·3D)는 `full-plan.html`에 그대로 보관합니다.
+
+## 이전 전체 준비 노트 (full-plan.html)
 
 https://gustnel1122-pixel.github.io/mumutori-offline-pages/
 
