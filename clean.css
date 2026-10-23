@@ -96,7 +96,8 @@ figure p{font-size:14px;color:var(--muted);margin-top:3px}
 .logos img{max-height:170px;width:auto;margin:0 auto}
 .cast{list-style:none;margin-top:16px;display:grid;gap:6px}
 .cast li{display:flex;gap:12px;font-size:14px;padding-bottom:6px;border-bottom:1px dashed var(--line)}
-.cast b{min-width:96px;color:var(--brown)}
+.cast b{min-width:96px;color:var(--brown);flex:none}
+.lucky-side .cast b{min-width:0;flex:0 0 46%}
 .cast span{color:var(--muted)}
 .group-title{font-size:19px;margin:46px 0 16px;letter-spacing:-.02em}
 .group-title small{font-size:13px;font-weight:400;color:var(--muted);margin-left:8px}
@@ -146,3 +147,8 @@ dialog button{position:fixed;top:14px;right:18px;color:#fff;font-size:30px}
   .fascia img{width:44px}
   .fascia .name{font-size:28px}
 }
+.lucky{display:grid;grid-template-columns:1.5fr 1fr;gap:26px;align-items:center}
+.lucky-main img{aspect-ratio:3/2;object-fit:cover}
+.goods.two{grid-template-columns:1fr 1fr;margin-top:22px}
+@media (max-width:960px){.lucky{grid-template-columns:1fr}}
+@media (max-width:600px){.goods.two{grid-template-columns:1fr}}
