@@ -87,3 +87,27 @@
 .letter-corner-figure{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:28px;align-items:center;margin:0 0 30px}
 .letter-corner-figure img{width:100%;height:auto;border-radius:8px}
 @media (max-width:700px){.letter-corner-figure{grid-template-columns:1fr}.letter-corner-figure img{max-width:260px}}
+.char-section .section-heading>p{max-width:640px;margin-top:14px;color:var(--muted);line-height:1.75}
+.char-intro{display:grid;grid-template-columns:1.6fr 1fr;gap:28px;align-items:start;margin-top:8px}
+.char-side{display:grid;gap:12px}
+.char-logos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.char-logo{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;align-items:center;justify-content:center}
+.char-logo img{width:100%;height:auto;max-height:190px;object-fit:contain}
+.char-cast{list-style:none;padding:0;margin:4px 0 0;display:grid;gap:6px}
+.char-cast li{display:flex;gap:10px;font-size:14px;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.char-cast strong{min-width:104px;color:var(--accent)}
+.char-cast span{color:var(--muted)}
+.char-group-title{font-size:20px;letter-spacing:-.4px;margin:44px 0 16px;padding-top:24px;border-top:1px solid var(--line)}
+.char-group-title small{font-size:13px;font-weight:400;color:var(--muted);margin-left:8px}
+.char-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.char-card img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:8px;background:var(--white)}
+.char-card figcaption{padding-top:12px}
+.char-card h3{font-size:17px;letter-spacing:-.3px}
+.char-card p{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.6}
+.char-wide img{aspect-ratio:3/2;object-fit:contain;background:#fff}
+@media (max-width:900px){.char-intro{grid-template-columns:1fr}.char-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.char-grid{grid-template-columns:1fr}}
+.char-card .image-button,.char-wide .image-button{border-radius:8px;overflow:hidden}
+.char-grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:900px){.char-grid-4{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.char-grid-4{grid-template-columns:1fr}}
